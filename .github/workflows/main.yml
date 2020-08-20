@@ -3,7 +3,8 @@ name: Pull Docker Images
 # Controls when the action will run
 on:
   schedule:
-    - cron: "* * * * *"
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '*/15 * * * *'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
