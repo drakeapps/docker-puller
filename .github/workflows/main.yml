@@ -17,24 +17,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-#    - name: Working on list
-#      run: |
-#        echo $(curl -s -H "Content-Type:application/json" -X POST -d '{"username":"${{ secrets.UNAME }}","password":"${{ secrets.UPASS }}"}' https://hub.docker.com/v2/users/login/)
-#        TOKEN=$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}' https://hub.docker.com/v2/users/login/ | jq -r .token)
-#        REPO_LIST=$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')
-#        echo ${REPO_LIST}
-
-    - name: Get a token
-      run: echo ::set-env name=TOKEN::$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":"${{ secrets.UNAME }}","password":"${{ secrets.UPASS }}"}' https://hub.docker.com/v3/users/login/ )
-
-#    - name: Get images list
-#      run: REPO_LIST=$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
-
-    - name: Pull Docker images
-      run: echo $TOKEN
-
     - name: Login to Docker
       run: docker login -u ${{ secrets.UNAME }} -p ${{ secrets.UPASS }}
 
-#    - name: Pull Docker images
-#      run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
+    - name: Pull Docker images
+      run: for i in $(docker search --limit 100 --no-trunc --format "{{.Name}}" ${{ secrets.UNAME }}); do docker pull ${i}; done
