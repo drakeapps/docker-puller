@@ -28,16 +28,13 @@ jobs:
 #        echo ${REPO_LIST}
 
     - name: Get a token
-      run: |
-        TOKEN=$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":"${{ secrets.UNAME }}","password":"${{ secrets.UPASS }}"}' https://hub.docker.com/v2/users/login/ | jq -r .token[]?);
-        REPO_LIST=$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name');
-        echo $REPO_LIST;
+      run: echo ::set-env name=TOKEN::$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":"${{ secrets.UNAME }}","password":"${{ secrets.UPASS }}"}' https://hub.docker.com/v2/users/login/ | jq -r .token[]?);
 
-    - name: Get images list
-      run: REPO_LIST=$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
+#    - name: Get images list
+#      run: REPO_LIST=$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
 
-    - name: Pull Docker images
-      run: echo ${REPO_LIST};echo "test"
+#    - name: Pull Docker images
+      run: echo $TOKEN
 
 #    - name: Pull Docker images
 #      run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
