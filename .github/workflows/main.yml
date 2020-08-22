@@ -27,4 +27,7 @@ jobs:
       run: docker login -u ${{ secrets.UNAME }} -p ${{ secrets.UPASS }}
 
     - name: Pull Docker images
+      run: echo ${REPO_LIST};echo "test"
+
+    - name: Pull Docker images
       run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
