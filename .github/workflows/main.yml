@@ -30,10 +30,10 @@ jobs:
 #      run: echo "::set-env name=TOKEN::$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}' https://hub.docker.com/v2/users/login/ | jq -r .token)"
 
 #    - name: Get images list
-      run: echo ::set-env name=REPO_LIST::$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
+#      run: echo ::set-env name=REPO_LIST::$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
 
 #    - name: Pull Docker images
 #      run: echo ${REPO_LIST};echo "test"
 
-    - name: Pull Docker images
-      run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
+#    - name: Pull Docker images
+#      run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
