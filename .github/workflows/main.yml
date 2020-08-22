@@ -17,9 +17,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-    - name: Login to Docker
-      run: docker login -u ${{ secrets.UNAME }} -p ${{ secrets.UPASS }}
-
 #    - name: Working on list
 #      run: |
 #        echo $(curl -s -H "Content-Type:application/json" -X POST -d '{"username":"${{ secrets.UNAME }}","password":"${{ secrets.UPASS }}"}' https://hub.docker.com/v2/users/login/)
@@ -35,6 +32,9 @@ jobs:
 
     - name: Pull Docker images
       run: echo $TOKEN
+
+    - name: Login to Docker
+      run: docker login -u ${{ secrets.UNAME }} -p ${{ secrets.UPASS }}
 
 #    - name: Pull Docker images
 #      run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
