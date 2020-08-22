@@ -21,4 +21,4 @@ jobs:
       run: docker login -u ${{ secrets.UNAME }} -p ${{ secrets.UPASS }}
 
     - name: Pull Docker images
-      run: for i in $(docker search --limit 100 --no-trunc --format "{{.Name}}" ${{ secrets.UNAME }}); do docker pull ${i}; done
+      run: for i in $(docker search --limit 100 --no-trunc --format "{{.Name}}" ${{ secrets.UNAME }}); do docker pull ${i} || true ; done
