@@ -18,8 +18,8 @@ jobs:
     steps:
 
     - name: Get a token
-      #run: TOKEN=$(curl -s -H "Content-Type: application/json" -X POST -d '{"username": ${{ secrets.UNAME }}, "password": ${{ secrets.UPASS }} }' https://hub.docker.com/v2/users/login/ | jq -r .token)
-      run: TOKEN=$(echo '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}')
+      run: TOKEN=$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+      #run: TOKEN=$(echo '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}')
       #run: TEST=$(echo '{"test":${{ secrets.UNAME}} }' | jq)
 
 #    - name: Get a token
