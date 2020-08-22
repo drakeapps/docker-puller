@@ -17,17 +17,23 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-    - name: Get a token
-      run: echo "::set-env name=TOKEN::$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}' https://hub.docker.com/v2/users/login/ | jq -r .token)"
-
-    - name: Get images list
-      run: echo ::set-env name=REPO_LIST::$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
-
     - name: Login to Docker
       run: docker login -u ${{ secrets.UNAME }} -p ${{ secrets.UPASS }}
 
-    - name: Pull Docker images
-      run: echo ${REPO_LIST};echo "test"
+    - name: Working on list
+      run: |
+        TOKEN=$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}' https://hub.docker.com/v2/users/login/ | jq -r .token)
+        REPO_LIST=$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')
+        echo ${REPO_LIST}
+
+#    - name: Get a token
+#      run: echo "::set-env name=TOKEN::$(curl -s -H "Content-Type:application/json" -X POST -d '{"username":${{ secrets.UNAME }},"password":${{ secrets.UPASS }}}' https://hub.docker.com/v2/users/login/ | jq -r .token)"
+
+#    - name: Get images list
+      run: echo ::set-env name=REPO_LIST::$(curl -s -H "Authorization:JWT ${TOKEN}" https://hub.docker.com/v2/repositories/${{ secrets.UNAME}}/?page_size=100 | jq -r '.results|.[]|.name')     
+
+#    - name: Pull Docker images
+#      run: echo ${REPO_LIST};echo "test"
 
     - name: Pull Docker images
       run: for i in ${REPO_LIST};do docker pull ${{ secrets.UNAME }}/${i};done
